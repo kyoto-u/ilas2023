@@ -1,0 +1,20 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+
+{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block header-title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+{% if not user_is_me %}
+    <div>
+        <a href="{% url 'chat' user.id %}">
+            チャット
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block footer %}{% endblock %}
+    

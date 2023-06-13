@@ -8,4 +8,6 @@ urlpatterns = [
     path('question', views.question, name='question'),
     path('question/ask', views.question_ask, name='question_ask'),
     path('question/<int:question_id>', views.question_answer, name='question_answer'),
+    path('user/<int:user_id>', views.user_view, name='user_view'),
+    path('chat/<int:user_id>', views.chat, name='chat'),
 ]

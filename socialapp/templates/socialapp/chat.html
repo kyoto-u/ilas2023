@@ -1,0 +1,25 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+
+{% endblock %}
+{% block title %}{{ user.username }} | チャット{% endblock %}
+{% block header-title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+    <div>{{ message.user_from.username }}</div>
+    <div>{{ message.message }}</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block footer %}
+<form action="" method="POST">
+    {{ form.message }}
+    {{ form.message.errors }}
+    {% csrf_token %}
+    <input type="submit" value="send" id="sendbutton">
+</form>
+{% endblock %}
+    

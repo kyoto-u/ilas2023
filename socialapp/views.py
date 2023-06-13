@@ -1,13 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .forms import SignUpForm, LoginForm, AskQuestionForm, AnswerQuestionForm
-from .models import Question, Answer
+from .forms import SignUpForm, LoginForm, AskQuestionForm, AnswerQuestionForm, ChatForm
+from .models import CustomUser, Question, Answer, ChatMessage
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import FormView
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 def signup_view(request):
     if request.method == "POST":
@@ -79,3 +80,40 @@ def question_answer(request, question_id):
         "question": question
     }
     return render(request, "socialapp/question_answer.html", context)
+
+@login_required
+def user_view(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    context = {
+        "user": user
+    }
+    if user == request.user:
+        context["user_is_me"] = True
+    else:
+        context["user_is_me"] = False
+
+    return render(request, "socialapp/user.html", context)
+
+@login_required
+def chat(request, user_id):
+    you = get_object_or_404(CustomUser, id=user_id)
+    me = request.user
+
+    form = ChatForm()
+    messages = ChatMessage.objects.filter(Q(user_from=me, user_to=you) | Q(user_to=me, user_from=you)).order_by("time")
+
+    if request.method == "POST":
+        form = ChatForm(request.POST, instance=ChatMessage(user_from=me, user_to=you))
+        if form.is_valid():
+            form.save()
+            return redirect("chat", you.id)
+        else:
+            print(form.errors)
+
+    context = {
+        "you": you,
+        "me": me,
+        "messages": messages,
+        "form": form,
+    }
+    return render(request, "socialapp/chat.html", context)

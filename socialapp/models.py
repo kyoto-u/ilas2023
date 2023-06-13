@@ -12,3 +12,9 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answerer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     answer = models.CharField(max_length=1000)
+
+class ChatMessage(models.Model):
+    user_from = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="user_from")
+    user_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="user_to")
+    message = models.CharField(max_length=500)
+    time = models.DateTimeField(auto_now_add=True)

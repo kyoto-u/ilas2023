@@ -10,7 +10,7 @@
 <div><a href="{% url 'question_ask' %}">質問をする</a></div>
 <p>質問一覧</p>
 {% for question, answers in question_list %}
-    <div>{{ question.questioner.username }}</div>
+    <div><a href="{% url 'user_view' question.questioner.id %}">{{ question.questioner.username }}</a></div>
     <div>
         <a href="{% url 'question_answer' question.id %}">
             {{ question.question }}
@@ -18,7 +18,10 @@
     </div>
     <ul>
         {% for answer in answers %}
-            <li>{{ answer.answer }}</li>
+            <li>
+                <a href="{% url 'user_view' answer.answerer.id %}">{{ answer.answerer.username }}</a><br>
+                {{ answer.answer }}
+            </li>
         {% endfor %}
     </ul>
 
