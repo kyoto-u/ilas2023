@@ -1,0 +1,29 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+
+{% endblock %}
+{% block title %}Signup{% endblock %}
+{% block header-title %}Signup{% endblock %}
+
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        <div class="field">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            <div class="errors">{{ field.errors }}</div>
+        </div>
+    {% endfor %}
+    <div id="submit-button">
+        <input type="submit">
+    </div>
+</form>
+<div id="login-link">
+    <a href="{% url 'login_view' %}">Login</a>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

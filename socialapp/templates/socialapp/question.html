@@ -1,0 +1,29 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+
+{% endblock %}
+{% block title %}質問スペース{% endblock %}
+{% block header-title %}質問スペース{% endblock %}
+
+{% block content %}
+<div><a href="{% url 'question_ask' %}">質問をする</a></div>
+<p>質問一覧</p>
+{% for question, answers in question_list %}
+    <div>{{ question.questioner.username }}</div>
+    <div>
+        <a href="{% url 'question_answer' question.id %}">
+            {{ question.question }}
+        </a>
+    </div>
+    <ul>
+        {% for answer in answers %}
+            <li>{{ answer.answer }}</li>
+        {% endfor %}
+    </ul>
+
+{% endfor %}
+{% endblock %}
+
+{% block footer %}{% endblock %}
+    

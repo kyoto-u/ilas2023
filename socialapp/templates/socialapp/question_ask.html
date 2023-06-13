@@ -1,0 +1,19 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+
+{% endblock %}
+{% block title %}質問スペース{% endblock %}
+{% block header-title %}質問スペース{% endblock %}
+
+{% block content %}
+<form action="" method="POST">
+    {{ form.question }}
+    {{ form.question.errors }}
+    {% csrf_token %}
+    <input type="submit" value="send" id="sendbutton">
+</form>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+    
