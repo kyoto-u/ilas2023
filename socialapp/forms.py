@@ -6,7 +6,8 @@ from django.forms import ModelForm
 class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username",)
+        fields = ("username", "faculty")
+        labels = {"faculty": "学部・学科"}
 
 class LoginForm(AuthenticationForm):
     pass

@@ -7,7 +7,15 @@
 {% block header-title %}ソーシャルアプリケーション{% endblock %}
 
 {% block content %}
-<a href="{% url 'question' %}">質問スペース</a>
+<div>
+    <a href="{% url 'question' %}">質問スペース</a>
+</div>
+<div>
+    <a href="{% url 'users_view' %}">ユーザー一覧</a>
+</div>
+<div>
+    <a href="{% url 'logout_view' %}">ログアウト</a>
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}

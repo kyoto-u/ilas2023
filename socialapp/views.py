@@ -1,8 +1,11 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .forms import SignUpForm, LoginForm, AskQuestionForm, AnswerQuestionForm, ChatForm
 from .models import CustomUser, Question, Answer, ChatMessage
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import FormView
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect, render
@@ -117,3 +120,14 @@ def chat(request, user_id):
         "form": form,
     }
     return render(request, "socialapp/chat.html", context)
+
+class UsersView(LoginRequiredMixin, ListView):
+    model = CustomUser
+    template_name = "socialapp/users.html"
+
+    def get_queryset(self):
+        users = CustomUser.objects.all().order_by("-date_joined")
+        return users
+    
+class Logout(LoginRequiredMixin, TemplateView):
+    template_name = "socialapp/logout.html"

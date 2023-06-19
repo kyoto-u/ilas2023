@@ -11,11 +11,13 @@
 <body>
     {% block header %}
     <header class="header">
-        <div class="header-container">
-            <span class="header-container__title">
-                {% block header-title %}{% endblock %}
-            </span>
-        </div>
+        <a href="{% url 'index' %}">
+            <div class="header-container">
+                <span class="header-container__title">
+                    {% block header-title %}{% endblock %}
+                </span>
+            </div>
+        </a>
     </header>
     {% endblock %}
 
