@@ -1,16 +1,22 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser, Question, Answer, ChatMessage
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 
 class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "faculty")
-        labels = {"faculty": "学部・学科"}
+        fields = ("username", "email", "faculty", "grade")
+        labels = {"faculty": "学部・学科", "grade": "回生"}
 
 class LoginForm(AuthenticationForm):
     pass
+
+class FilterForm(Form):
+    faculty = forms.ChoiceField(choices=((0, "全ての学部"),)+CustomUser.faculty_list, label="学部")
+    grade = forms.ChoiceField(choices=((0, "全ての回生"),)+CustomUser.grade_list, label="回生")
+    class Meta:
+        fields = {"faculty", "grade"}
 
 class AskQuestionForm(ModelForm):
     question = forms.CharField(

@@ -4,11 +4,11 @@
 
 {% endblock %}
 {% block title %}ソーシャルアプリケーション{% endblock %}
-{% block header-title %}ソーシャルアプリケーション{% endblock %}
+{% block header-title %}ホーム{% endblock %}
 
 {% block content %}
 <div>
-    <a href="{% url 'question' %}">質問スペース</a>
+    <a href="{% url 'question' 0 0 %}">質問スペース</a>
 </div>
 <div>
     <a href="{% url 'users_view' %}">ユーザー一覧</a>

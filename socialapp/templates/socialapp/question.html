@@ -9,10 +9,23 @@
 {% block content %}
 <div><a href="{% url 'question_ask' %}">質問をする</a></div>
 <p>質問一覧</p>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        <div class="field">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}:</label>
+            {{ field }}
+            <div class="errors">{{ field.errors }}</div>
+        </div>
+    {% endfor %}
+    <input type="submit" value="この条件で絞り込み" id="sendbutton">
+</form>
+
 {% for question, answers in question_list %}
     <div>
         <a href="{% url 'user_view' question.questioner.id %}">{{ question.questioner.username }}</a>
-        {{ question.questioner.get_faculty_display }}
+        {{ question.questioner.get_faculty_display }} , {{ question.questioner.get_grade_display }}
     </div>
     <div>
         <a href="{% url 'question_answer' question.id %}">
@@ -23,7 +36,7 @@
         {% for answer in answers %}
             <li>
                 <a href="{% url 'user_view' answer.answerer.id %}">{{ answer.answerer.username }}</a>
-                {{ answer.answerer.get_faculty_display }}<br>
+                {{ answer.answerer.get_faculty_display }} , {{ answer.answerer.get_grade_display }}<br>
                 {{ answer.answer }}
             </li>
         {% endfor %}

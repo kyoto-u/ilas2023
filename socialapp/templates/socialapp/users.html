@@ -11,7 +11,7 @@
     <div>
         {% if customuser == user %}you:{% endif %}
         <a href="{% url 'user_view' customuser.id %}">{{ customuser.username }}</a>
-        {{ customuser.get_faculty_display }}
+        {{ customuser.get_faculty_display }} , {{ customuser.get_grade_display }}
     </div>
 {% endfor %}
 {% endblock %}
