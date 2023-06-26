@@ -128,3 +128,6 @@ LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL="logout_view"
 
 AUTH_USER_MODEL = 'socialapp.CustomUser'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media_local'

@@ -1,13 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser, Question, Answer, ChatMessage
+from .models import CustomUser, Question, Answer, ChatTalk
 from django.forms import ModelForm, Form
 
 class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "email", "faculty", "grade")
-        labels = {"faculty": "学部・学科", "grade": "回生"}
+        fields = ("username", "email", "image", "faculty", "grade")
+        labels = {"image": "プロフィール画像", "faculty": "学部・学科", "grade": "回生"}
 
 class LoginForm(AuthenticationForm):
     pass
@@ -41,11 +41,11 @@ class AnswerQuestionForm(ModelForm):
         fields = ("answer",)
 
 class ChatForm(ModelForm):
-    message = forms.CharField(
+    talk = forms.CharField(
         max_length=500,
         required=True,
     )
 
     class Meta:
-        model = ChatMessage
-        fields = ("message",)
+        model = ChatTalk
+        fields = ("talk",)

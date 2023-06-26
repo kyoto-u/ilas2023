@@ -1,23 +1,36 @@
 {% extends "socialapp/base.html" %}
 {% load static %}
 {% block extra_style %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/chat.css' %}" />
 {% endblock %}
 {% block title %}{{ you.username }} | チャット{% endblock %}
 {% block header-title %}{{ you.username }}{% endblock %}
 
 {% block content %}
-{% for message in messages %}
-    <div>{{ message.user_from.username }}</div>
-    <div>{{ message.message }}</div>
-{% endfor %}
+
+<ul class="chat_list">
+    {% for talk in talks %}
+        <li class="chat_content">
+            <div class="chat_content_left">
+                <img src="{{ talk.user_from.image.url }}" class="user_image">
+            </div>
+            <div class="chat_content_right">
+                <div>{{ talk.user_from.username }}</div>
+                <div>{{ talk.talk }}</div>
+            </div>
+        </li>
+        
+    {% endfor %}
+</ul>
+    
+
 
 {% endblock %}
 
 {% block footer %}
 <form action="" method="POST">
-    {{ form.message }}
-    {{ form.message.errors }}
+    {{ form.talk }}
+    {{ form.talk.errors }}
     {% csrf_token %}
     <input type="submit" value="send" id="sendbutton">
 </form>

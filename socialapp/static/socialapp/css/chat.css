@@ -1,0 +1,8 @@
+.chat_list {
+    list-style: none;
+    padding: 0;
+}
+
+.chat_content {
+    display: flex;
+}

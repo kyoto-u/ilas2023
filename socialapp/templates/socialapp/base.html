@@ -11,19 +11,23 @@
 <body>
     {% block header %}
     <header class="header">
-        <a href="{% url 'index' %}">
-            <div class="header-container">
-                <span class="header-container__title">
-                    ソーシャルアプリケーション
-                </span>
-            </div>
-        </a>
-        <div>
-            {% block header-title %}{% endblock %}
+        <div class="header-container">
+            
+                <a href="{% url 'index' %}" class="header-container__title a_none-decoration">ソーシャルアプリケーション</a>
+           
+            {% if user.is_authenticated %}
+                <a href="{% url 'user_view' user.id %}" class="header-container__user a_none-decoration">
+                    <div class="username_field">{{ user.username }}</div>
+                    <img src="{{ user.image.url }}" class="user_image header_image">
+                </a>
+            {% endif %}
+            
         </div>
     </header>
     {% endblock %}
-
+    <h1>
+        {% block header-title %}{% endblock %}
+    </h1>
     {% block content %}
     {% endblock %}
 

@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .forms import SignUpForm, LoginForm, AskQuestionForm, AnswerQuestionForm, ChatForm, FilterForm
-from .models import CustomUser, Question, Answer, ChatMessage
+from .models import CustomUser, Question, Answer, ChatTalk
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import FormView
@@ -15,7 +15,7 @@ from django.db.models import Q
 
 def signup_view(request):
     if request.method == "POST":
-        form = SignUpForm(request.POST)
+        form = SignUpForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get("username")
@@ -100,15 +100,9 @@ def question_answer(request, question_id):
 
 @login_required
 def user_view(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
     context = {
-        "user": user
+        "user_obj": get_object_or_404(CustomUser, id=user_id)
     }
-    if user == request.user:
-        context["user_is_me"] = True
-    else:
-        context["user_is_me"] = False
-
     return render(request, "socialapp/user.html", context)
 
 @login_required
@@ -117,10 +111,10 @@ def chat(request, user_id):
     me = request.user
 
     form = ChatForm()
-    messages = ChatMessage.objects.filter(Q(user_from=me, user_to=you) | Q(user_to=me, user_from=you)).order_by("time")
+    talks = ChatTalk.objects.filter(Q(user_from=me, user_to=you) | Q(user_to=me, user_from=you)).order_by("time")
 
     if request.method == "POST":
-        form = ChatForm(request.POST, instance=ChatMessage(user_from=me, user_to=you))
+        form = ChatForm(request.POST, instance=ChatTalk(user_from=me, user_to=you))
         if form.is_valid():
             form.save()
             return redirect("chat", you.id)
@@ -130,7 +124,7 @@ def chat(request, user_id):
     context = {
         "you": you,
         "me": me,
-        "messages": messages,
+        "talks": talks,
         "form": form,
     }
     return render(request, "socialapp/chat.html", context)
@@ -145,3 +139,5 @@ class UsersView(LoginRequiredMixin, ListView):
     
 class Logout(LoginRequiredMixin, TemplateView):
     template_name = "socialapp/logout.html"
+
+# 画像の変更　default.jpgは消さないように！

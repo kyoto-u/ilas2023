@@ -3,13 +3,19 @@
 {% block extra_style %}
 
 {% endblock %}
-{% block title %}{{ user.username }}{% endblock %}
-{% block header-title %}{{ user.username }}{% endblock %}
+{% block title %}{{ user_obj.username }}{% endblock %}
+{% block header-title %}{% endblock %}
 
 {% block content %}
-{% if not user_is_me %}
+<span id="image_container">
+    <img src="{{ user_obj.image.url }}" class="user_image">
+</span>
+<div id="username">
+    {{ user_obj.username }}
+</div>
+{% if user_obj != user %}
     <div>
-        <a href="{% url 'chat' user.id %}">
+        <a href="{% url 'chat' user_obj.id %}">
             チャット
         </a>
     </div>

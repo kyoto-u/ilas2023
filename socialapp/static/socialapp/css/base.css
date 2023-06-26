@@ -9,13 +9,53 @@ body{
     margin: 0;
 }
 
+a {
+    color: black;
+}
+.a_none-decoration {
+    text-decoration: none;
+}
+h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
 .header{
     border-bottom: solid 1px black;
+    text-decoration: none;    
 }
 .header-container{
-
+    display: flex;
+    width: 100%;
+    height: 50px;
 }
 .header-container__title{
-
+    width: 220px;
+    height: 100%;
+    margin: auto 0;
+    padding: calc((50px - 1rem) / 2) 0 calc((50px - 1rem) / 2) 0;
+}
+.header-container__user {
+    display: flex;
+    margin: 0 0 0 auto;
+    text-align: right;
+}
+.username_field {
+    max-width: calc(100% - 50px);
+    overflow: hidden;
+    text-overflow:  ellipsis;
+    margin: auto 0;
+}
+.header_image {
+    display: block;
+}
+.user_image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-position: center center;
+    border: 0.5px black solid;
+    margin: 5px;
 }
 
