@@ -1,0 +1,22 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/post_create.css' %}" />
+{% endblock %}
+{% block title %}投稿を作成{% endblock %}
+{% block header-title %}投稿を作成{% endblock %}
+
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="field">
+        {{ form.text }}
+        <div class="errors">{{ form.text.errors }}</div>
+        <label for="id_image1">画像:</label>
+        {{ form.image1 }}
+        <div class="errors">{{ form.image1.errors }}</div>
+    </div>
+    <input type="submit" value="投稿" id="sendbutton">
+</form>
+{% endblock %}

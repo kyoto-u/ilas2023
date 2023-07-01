@@ -1,0 +1,11 @@
+.user_field {
+    display: flex;
+    text-decoration: none;   
+    border-bottom: solid 1px #9b9b9b; 
+}
+.user_field:first-of-type {
+    border-top: 1px #9b9b9b solid;
+}
+.username {
+    font-weight: bold;
+}

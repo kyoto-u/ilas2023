@@ -5,4 +5,33 @@
 
 .chat_content {
     display: flex;
+    border-bottom: solid 1px #9b9b9b;
+}
+.chat_content:first-of-type {
+    border-top: solid 1px #9b9b9b;
+}
+.chat_content_right {
+    width: calc(100% - 50px);
+}
+
+.username_field {
+    font-size: 0.8rem;
+}
+.time_field {
+    font-size: 0.6rem;
+    text-align: right;
+}
+
+#form_field {
+    display: flex;
+}
+#id_talk {
+    width: calc(100% - 49px);
+    height: 1.5rem;
+    margin: 3px 0;
+}
+#sendtalkbutton {
+    width: 43px;
+    height: 1.5rem;
+    margin: 3px;
 }

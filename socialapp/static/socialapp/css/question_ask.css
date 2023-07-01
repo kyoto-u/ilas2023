@@ -1,0 +1,4 @@
+#id_question {
+    width: calc(100% - 10px);
+    margin: 5px;
+}

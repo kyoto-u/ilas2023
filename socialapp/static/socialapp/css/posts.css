@@ -1,0 +1,34 @@
+.post_list {
+    list-style: none;
+    padding: 0;
+}
+.post_list a:not(.user_link) {
+    color: #1a0dab;
+}
+
+.post_content {
+    display: flex;
+    border-bottom: solid 1px #9b9b9b;
+}
+.post_content:first-of-type {
+    border-top: solid 1px #9b9b9b;
+}
+.post_content_right {
+    width: calc(100% - 50px);
+}
+.post_image {
+    max-width: 80%;
+}
+.post_time {
+    width: 100%;
+    text-align: right;
+    font-size: 12px;
+}
+#id_filter {
+    width: calc(100% - 49px);
+    height: 1.5rem;
+}
+#searchbutton {
+    width: 43px;
+    height: 1.5rem;
+}

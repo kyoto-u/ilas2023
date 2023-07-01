@@ -33,21 +33,31 @@ class CustomUser(AbstractUser):
     faculty = models.IntegerField(default=0, choices=faculty_list)
     grade = models.IntegerField(default=1, choices=grade_list) # 年度が変わるごとに更新する必要がある
     image = models.ImageField(default="default.jpg")
+    question_faculty_filter = models.IntegerField(default=0)
+    question_grade_filter = models.IntegerField(default=0)
 
 class Question(models.Model):
     questioner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    question = models.CharField(max_length=500)
+    question = models.TextField()
     # 質問した当時の回生・学部学科を保存する
     faculty = models.IntegerField(default=1)
     grade = models.IntegerField(default=1)
+    time = models.DateTimeField(auto_now_add=True)
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answerer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    answer = models.CharField(max_length=1000)
+    answer = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
 
 class ChatTalk(models.Model):
     user_from = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="user_from")
     user_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="user_to")
     talk = models.CharField(max_length=500)
+    time = models.DateTimeField(auto_now_add=True)
+
+class Post(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    text = models.TextField(blank=True, null=True)
+    image1 = models.ImageField(blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)

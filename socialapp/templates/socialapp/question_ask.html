@@ -1,13 +1,16 @@
 {% extends "socialapp/base.html" %}
 {% load static %}
 {% block extra_style %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/question_ask.css' %}" />
 {% endblock %}
 {% block title %}質問スペース{% endblock %}
 {% block header-title %}質問スペース{% endblock %}
 
 {% block content %}
 <form action="" method="POST">
+    <div>
+        <label class="form-label" for="{{ field.id_for_label }}">{{ form.question.label }}:</label>
+    </div>
     {{ form.question }}
     {{ form.question.errors }}
     {% csrf_token %}

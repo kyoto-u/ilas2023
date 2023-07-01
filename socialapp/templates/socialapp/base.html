@@ -12,8 +12,7 @@
     {% block header %}
     <header class="header">
         <div class="header-container">
-            
-                <a href="{% url 'index' %}" class="header-container__title a_none-decoration">ソーシャルアプリケーション</a>
+            <a href="{% url 'index' %}" class="header-container__title a_none-decoration">ソーシャルアプリケーション</a>
            
             {% if user.is_authenticated %}
                 <a href="{% url 'user_view' user.id %}" class="header-container__user a_none-decoration">

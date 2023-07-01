@@ -15,24 +15,21 @@
                 <img src="{{ talk.user_from.image.url }}" class="user_image">
             </div>
             <div class="chat_content_right">
-                <div>{{ talk.user_from.username }}</div>
-                <div>{{ talk.talk }}</div>
+                <div class="username_field">{{ talk.user_from.username }}</div>
+                <div class="talk_field">{{ talk.talk }}</div>
+                <div class="time_field">{{ talk.time }}</div>
             </div>
         </li>
-        
     {% endfor %}
 </ul>
-    
-
-
 {% endblock %}
 
 {% block footer %}
-<form action="" method="POST">
+<form action="" method="POST" id="form_field">
     {{ form.talk }}
     {{ form.talk.errors }}
     {% csrf_token %}
-    <input type="submit" value="send" id="sendbutton">
+    <input type="submit" value="送信" id="sendtalkbutton">
 </form>
 {% endblock %}
     

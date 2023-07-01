@@ -8,16 +8,26 @@ html{
 body{
     margin: 0;
 }
-
 a {
     color: black;
 }
+
 .a_none-decoration {
     text-decoration: none;
 }
 h1 {
     margin: 0;
     font-size: 1.5rem;
+}
+h2 {
+    font-size: 1.2rem;
+}
+
+.line {
+    margin: 0;
+    border-color: #9b9b9b;
+    border-style: solid;
+    border-width: 0.5px;
 }
 
 .header{
@@ -59,3 +69,10 @@ h1 {
     margin: 5px;
 }
 
+.errors {
+    color: red;
+}
+#sendbutton {
+    display: block;
+    margin: 1rem auto 0 auto;
+}

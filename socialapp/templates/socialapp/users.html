@@ -1,18 +1,25 @@
 {% extends "socialapp/base.html" %}
 {% load static %}
 {% block extra_style %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/users.css' %}" />
 {% endblock %}
 {% block title %}ユーザー一覧{% endblock %}
 {% block header-title %}ユーザー一覧{% endblock %}
 
 {% block content %}
 {% for customuser in customuser_list %}
-    <div>
-        {% if customuser == user %}you:{% endif %}
-        <a href="{% url 'user_view' customuser.id %}">{{ customuser.username }}</a>
-        {{ customuser.get_faculty_display }} , {{ customuser.get_grade_display }}
-    </div>
+    <a href="{% url 'user_view' customuser.id %}" class="user_field">
+        
+            <div class="user_field_left">
+                <img src="{{ customuser.image.url }}" class="user_image">
+            </div>
+            <div class="user_field_right">
+                {% if customuser == user %}自分:{% endif %}
+                <span class="username">{{ customuser.username }}</span>
+                <div>{{ customuser.get_faculty_display }} , {{ customuser.get_grade_display }}</div>
+            </div>
+       
+    </a>
 {% endfor %}
 {% endblock %}
 

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser, Question, Answer, ChatTalk
+from .models import CustomUser, Question, Answer, ChatTalk, Post
 from django.forms import ModelForm, Form
 
 class SignUpForm(UserCreationForm):
@@ -19,26 +19,28 @@ class FilterForm(Form):
         fields = {"faculty", "grade"}
 
 class AskQuestionForm(ModelForm):
-    question = forms.CharField(
-        max_length=500,
-        required=True,
-        label="質問"
-    )
+    # question = forms.CharField(
+    #     max_length=500,
+    #     required=True,
+    #     label="質問"
+    # )
 
     class Meta:
         model = Question
         fields = ("question",)
+        labels = {"question": "質問"}
 
 class AnswerQuestionForm(ModelForm):
-    answer = forms.CharField(
-        max_length=1000,
-        required=True,
-        label="回答"
-    )
+    # answer = forms.CharField(
+    #     max_length=1000,
+    #     required=True,
+    #     label="回答"
+    # )
 
     class Meta:
         model = Answer
         fields = ("answer",)
+        labels = {"answer": "回答"}
 
 class ChatForm(ModelForm):
     talk = forms.CharField(
@@ -49,3 +51,11 @@ class ChatForm(ModelForm):
     class Meta:
         model = ChatTalk
         fields = ("talk",)
+
+class PostForm(ModelForm):
+    class Meta:
+        model = Post
+        fields = ("text", "image1")
+
+class PostFilterForm(Form):
+    filter = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "ユーザー名または内容を検索"}))
