@@ -9,6 +9,7 @@
 {% block content %}
 <a href="{% url 'post_create' %}" id="post_create_link">新しい投稿を作成</a>
 <form action="" method="GET">
+    {{ form.group }}
     {{ form.filter }}
     <input type="submit" value="検索" id="searchbutton">
 </form>
@@ -25,10 +26,14 @@
                 {% if post.image1 %}
                     <img src="{{ post.image1.url }}" class="post_image">
                 {% endif %}
+                {% for group in post.group.all %}
+                    <a class="group_tag" href="{% url 'users_view' %}?category={{ group.category }}&number={{ group.number }}">
+                        {{ group.name }}
+                    </a>
+                {% endfor %}
                 <div class="post_time">{{ post.time }}</div>
             </div>
         </li>
-        
     {% endfor %}
 </ul>
 {% endblock %}

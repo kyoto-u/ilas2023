@@ -1,0 +1,15 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/create_group.css' %}" /> -->
+{% endblock %}
+{% block title %}グループを作成{% endblock %}
+{% block header-title %}グループを作成{% endblock %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="作成" id="sendbutton">
+</form>
+{% endblock %}

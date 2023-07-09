@@ -15,6 +15,10 @@ urlpatterns = [
     path('posts', views.PostsView.as_view(), name='posts_view'),
     path('posts/create', views.PostCreate.as_view(), name='post_create'),
     path('users', views.UsersView.as_view(), name="users_view"),
+    path('groups/create', views.CreateGroupView.as_view(), name="create_group"),
+    path('groups/join/<int:category>/<int:number>', views.group_join_view, name='group_join'),
+    path('groups/leave/<int:category>/<int:number>', views.group_leave_view, name='group_leave'),
+    path('groups', views.GroupsView.as_view(), name="groups_view"),
     path('logout', views.Logout.as_view(), name="logout_view")
 ]
 

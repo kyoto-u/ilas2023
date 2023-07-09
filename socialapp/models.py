@@ -2,6 +2,17 @@ from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+class UserGroup(models.Model):
+    category = models.IntegerField()
+    # 0:すべてのユーザー
+    # 1:学部
+    # 2:学年
+    number = models.IntegerField(default=0)
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class CustomUser(AbstractUser):
     faculty_list = (
         (1, "総合人間学部"),
@@ -32,9 +43,10 @@ class CustomUser(AbstractUser):
 
     faculty = models.IntegerField(default=0, choices=faculty_list)
     grade = models.IntegerField(default=1, choices=grade_list) # 年度が変わるごとに更新する必要がある
-    image = models.ImageField(default="default.jpg")
+    image = models.ImageField(default="default.JPG")
     question_faculty_filter = models.IntegerField(default=0)
     question_grade_filter = models.IntegerField(default=0)
+    group = models.ManyToManyField(UserGroup, default=0)
 
 class Question(models.Model):
     questioner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -55,9 +67,14 @@ class ChatTalk(models.Model):
     user_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="user_to")
     talk = models.CharField(max_length=500)
     time = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
 class Post(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    text = models.TextField(blank=True, null=True)
+    text = models.TextField(blank=True, null=False, default="")
     image1 = models.ImageField(blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
+    group = models.ManyToManyField(UserGroup, default=0)
+
+    def __str__(self):
+        return "[" + self.user.username + "]" + self.text

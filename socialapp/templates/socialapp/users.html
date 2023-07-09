@@ -7,17 +7,32 @@
 {% block header-title %}ユーザー一覧{% endblock %}
 
 {% block content %}
-{% for customuser in customuser_list %}
-    <a href="{% url 'user_view' customuser.id %}" class="user_field">
-        
-            <div class="user_field_left">
-                <img src="{{ customuser.image.url }}" class="user_image">
-            </div>
-            <div class="user_field_right">
-                {% if customuser == user %}自分:{% endif %}
-                <span class="username">{{ customuser.username }}</span>
-                <div>{{ customuser.get_faculty_display }} , {{ customuser.get_grade_display }}</div>
-            </div>
+{% if group %}
+    <div class="group_field">
+        グループ: <span class="groupname">{{ group.name }}</span>
+        {% if is_joined %}
+            <a href="{% url 'group_leave' group.category group.number %}">脱退</a>
+        {% else %}
+            <a href="{% url 'group_join' group.category group.number %}">参加</a>
+        {% endif %}
+        <a href="{% url 'posts_view' %}?group={{ group.category }}+{{ group.number }}">投稿</a>
+    </div>
+{% endif %}
+{% for customuser, has_unread in customuser_list %}
+    <a href="{% url 'user_view' customuser.id %}" class="user_field"> 
+        <div class="user_field_left">
+            <img src="{{ customuser.image.url }}" class="user_image">
+        </div>
+        <div class="user_field_right">
+            {% if customuser == user %}自分:{% endif %}
+            <span class="username">{{ customuser.username }}</span>
+            <div>{{ customuser.get_faculty_display }} , {{ customuser.get_grade_display }}</div>
+            {% if has_unread %}
+                <div class="message">
+                    チャットに未読メッセージがあります。
+                </div>
+            {% endif %}
+        </div>
        
     </a>
 {% endfor %}

@@ -12,6 +12,10 @@ a {
     color: black;
 }
 
+.message {
+    color: red;
+}
+
 .a_none-decoration {
     text-decoration: none;
 }
@@ -75,4 +79,11 @@ h2 {
 #sendbutton {
     display: block;
     margin: 1rem auto 0 auto;
+}
+.group_tag {
+    text-decoration: none;
+    color: black;
+    font-size: 0.9rem;
+    border: solid 1px black;
+    margin: 2px 2px 2px 0px;
 }

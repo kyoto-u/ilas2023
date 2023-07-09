@@ -1,17 +1,19 @@
 {% extends "socialapp/base.html" %}
 {% load static %}
 {% block extra_style %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/user.css' %}" />
 {% endblock %}
 {% block title %}{{ user_obj.username }}{% endblock %}
 {% block header-title %}{% endblock %}
 
 {% block content %}
-<span id="image_container">
-    <img src="{{ user_obj.image.url }}" class="user_image">
-</span>
-<div id="username">
-    {{ user_obj.username }}
+<div class="top_field">
+    <div id="image_container">
+        <img src="{{ user_obj.image.url }}" class="user_image">
+    </div>
+    <h2 id="username">
+        {{ user_obj.username }}
+    </h2>
 </div>
 {% if user_obj != user %}
     <div>
@@ -20,6 +22,18 @@
         </a>
     </div>
 {% endif %}
+
+<div>参加日:{{ user_obj.date_joined.date }}</div>
+<div>所属:{{ user_obj.get_faculty_display }}</div>
+<div>回生:{{ user_obj.get_grade_display }}</div>
+
+<div>所属グループ:</div>
+{% for group in groups %}
+    <a class="group_tag" href="{% url 'users_view' %}?category={{ group.category }}&number={{ group.number }}">
+        {{ group.name }}
+    </a>
+{% endfor %}
+
 {% endblock %}
 
 {% block footer %}{% endblock %}

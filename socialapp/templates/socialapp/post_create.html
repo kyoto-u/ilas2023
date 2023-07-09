@@ -16,6 +16,8 @@
         <label for="id_image1">画像:</label>
         {{ form.image1 }}
         <div class="errors">{{ form.image1.errors }}</div>
+        {{ form.group_select }}
+        <div class="errors">{{ form.group_select.errors }}</div>
     </div>
     <input type="submit" value="投稿" id="sendbutton">
 </form>

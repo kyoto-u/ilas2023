@@ -2,7 +2,7 @@
     list-style: none;
     padding: 0;
 }
-.post_list a:not(.user_link) {
+.post_list a:not(.user_link, .group_tag) {
     color: #1a0dab;
 }
 
@@ -17,6 +17,7 @@
     width: calc(100% - 50px);
 }
 .post_image {
+    display: block;
     max-width: 80%;
 }
 .post_time {

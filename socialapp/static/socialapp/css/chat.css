@@ -7,6 +7,9 @@
     display: flex;
     border-bottom: solid 1px #9b9b9b;
 }
+.unread {
+    background-color: cornsilk;
+}
 .chat_content:first-of-type {
     border-top: solid 1px #9b9b9b;
 }

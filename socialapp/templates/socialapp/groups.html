@@ -1,0 +1,51 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/groups.css' %}" />
+{% endblock %}
+{% block title %}グループ一覧{% endblock %}
+{% block header-title %}グループ一覧{% endblock %}
+
+{% block content %}
+<details open>
+    <summary>学部</summary>
+    <ul class="groups_list">
+        {% for group in faculty_group %}
+            <li>
+                <a href="{% url 'users_view' %}?category={{ group.category }}&number={{ group.number }}">
+                    {{ group.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</details>
+
+<details open>
+    <summary>回生</summary>
+    <ul class="groups_list">
+        {% for group in grade_group %}
+            <li>
+                <a href="{% url 'users_view' %}?category={{ group.category }}&number={{ group.number }}">
+                    {{ group.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</details>
+
+<details open>
+    <summary>そのほかのグループ</summary>
+    <ul class="groups_list">
+        {% for group in other_group %}
+            <li>
+                <a href="{% url 'users_view' %}?category={{ group.category }}&number={{ group.number }}">
+                    {{ group.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</details>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+    

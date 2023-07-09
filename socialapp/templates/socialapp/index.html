@@ -14,8 +14,19 @@
     <a href="{% url 'posts_view' %}">投稿</a>
 </div>
 <div>
+    <a href="{% url 'groups_view' %}">グループ一覧</a>
+</div>
+<div>
+    <a href="{% url 'create_group' %}">グループを作成</a>
+</div>
+<div>
     <a href="{% url 'users_view' %}">ユーザー一覧</a>
 </div>
+{% if has_unread %}
+<div class="message">
+    チャットに未読メッセージがあります。
+</div>
+{% endif %}
 <div>
     <a href="{% url 'logout_view' %}">ログアウト</a>
 </div>

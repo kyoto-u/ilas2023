@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser, Question, Answer, ChatTalk, Post
+from .models import CustomUser, Question, Answer, ChatTalk, Post, UserGroup
 from django.forms import ModelForm, Form
 
 class SignUpForm(UserCreationForm):
@@ -53,9 +53,34 @@ class ChatForm(ModelForm):
         fields = ("talk",)
 
 class PostForm(ModelForm):
+    group_select = forms.MultipleChoiceField(
+        label="グループ",
+        required=True,
+        widget=forms.CheckboxSelectMultiple
+    )
+
     class Meta:
         model = Post
-        fields = ("text", "image1")
+        fields = ("text", "image1", "group_select")
 
 class PostFilterForm(Form):
-    filter = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "ユーザー名または内容を検索"}))
+    group = forms.MultipleChoiceField(
+        label="グループ",
+        required=True,
+        widget=forms.CheckboxSelectMultiple
+    )
+    filter = forms.CharField(
+        label="",
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "ユーザー名または内容を検索"})
+    )
+    
+class CreateGroupForm(ModelForm):
+    name = forms.CharField(
+        max_length=50,
+        label="グループ名",
+    )
+
+    class Meta:
+        model = UserGroup
+        fields = ["name"]

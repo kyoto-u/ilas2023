@@ -9,8 +9,9 @@
 {% block content %}
 
 <ul class="chat_list">
-    {% for talk in talks %}
-        <li class="chat_content">
+    {% for talk, is_read in talks %}
+        <li class="chat_content{% if not is_read %} unread{% endif %}">
+            {{ unread_list.forloop.counter0 }}
             <div class="chat_content_left">
                 <img src="{{ talk.user_from.image.url }}" class="user_image">
             </div>
