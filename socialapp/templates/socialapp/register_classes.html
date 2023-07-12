@@ -1,0 +1,21 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/register_classes.css' %}" />
+{% endblock %}
+{% block title %}授業登録{% endblock %}
+{% block header-title %}授業登録{% endblock %}
+
+{% block content %}
+<ol>
+    <li>お使いのブラウザでPandAにログインしてください。</li>
+    <li>そのブラウザで、<a class="link" target="_blank" href="https://panda.ecs.kyoto-u.ac.jp/direct/site.json?_limit=50">https://panda.ecs.kyoto-u.ac.jp/direct/site.json?_limit=50</a>にアクセスしてください。</li>
+    <li>あなたが履修している授業に関する情報が表示されます。それをすべてコピーして、以下に入力して送信してください。</li>
+</ol>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="登録" id="sendbutton">
+</form>
+{% endblock %}

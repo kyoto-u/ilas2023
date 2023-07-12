@@ -1,5 +1,6 @@
 .form_field {
     display: flex;
+    border-bottom: solid 1px #9b9b9b;
 }
 .field {
     margin-right: 1rem;
@@ -12,10 +13,13 @@
     color: #1a0dab;
 }
 
+.question_content {
+    border-bottom: solid 1px #9b9b9b;
+}
+
 .question_field {
     display: flex;
     width: 100%;
-    border-top: solid 1px #9b9b9b;
 }
 .question_field_right {
     width: calc(100% - 50px);

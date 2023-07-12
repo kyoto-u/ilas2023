@@ -38,3 +38,11 @@
     height: 1.5rem;
     margin: 3px;
 }
+
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: white;
+    border-top: solid 1px #9b9b9b;
+}

@@ -1,0 +1,23 @@
+{% extends "socialapp/base.html" %}
+{% load static %}
+{% block extra_style %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/register_classes.css' %}" /> -->
+{% endblock %}
+{% block title %}授業登録{% endblock %}
+{% block header-title %}授業登録{% endblock %}
+
+{% block content %}
+<p>
+    登録が完了しました。
+</p>
+<p>
+    現在、以下の授業のグループに参加しています。
+    参加しない授業がある場合は、選択してボタンをクリックしてください。
+</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="この授業のグループに参加しない" id="sendbutton">
+</form>
+{% endblock %}

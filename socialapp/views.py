@@ -1,3 +1,4 @@
+import json
 from typing import Any, Dict, Optional, Type
 from django.db.models import Q, Max
 from django.db.models.query import QuerySet
@@ -5,7 +6,7 @@ from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect, render
-from .forms import SignUpForm, LoginForm, AskQuestionForm, AnswerQuestionForm, ChatForm, FilterForm, PostForm, PostFilterForm, CreateGroupForm
+from .forms import *
 from .models import CustomUser, Question, Answer, ChatTalk, Post, UserGroup
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView, ListView, CreateView
@@ -114,7 +115,7 @@ def user_view(request, user_id):
     context = {
         "user_obj": get_object_or_404(CustomUser, id=user_id)
     }
-    groups = context["user_obj"].group.exclude((Q(category=0) & Q(number=0)) | (Q(category=3) & Q(number=0)))
+    groups = context["user_obj"].group.exclude((Q(category=0) & Q(number=0)))
     context["groups"] = groups
     return render(request, "socialapp/user.html", context)
 
@@ -185,8 +186,10 @@ class GroupsView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['faculty_group'] = UserGroup.objects.filter(category=1)
         context['grade_group'] = UserGroup.objects.filter(category=2)
-        context['other_group'] = UserGroup.objects.exclude(Q(category=0) | Q(category=1) | Q(category=2))
+        context['class_group'] = UserGroup.objects.filter(category=5)
+        context['other_group'] = UserGroup.objects.exclude(Q(category=0) | Q(category=1) | Q(category=2) | Q(category=5))
         return context
+    
 class CreateGroupView(LoginRequiredMixin, CreateView):
     template_name = "socialapp/create_group.html"
     model = UserGroup
@@ -234,7 +237,6 @@ class PostsView(LoginRequiredMixin, ListView):
         if group:
             form.initial['group'] = group
         choices = getMyGroupsChoices(self.request.user) # 選択肢の番号は，"category_number"
-        choices.pop(0)
         form.fields['group'].choices = choices
         context["form"] = form
         return context
@@ -250,8 +252,8 @@ class PostsView(LoginRequiredMixin, ListView):
         if groups:
             count = 0
             for group in groups:
-                category = int(group.split(' ')[0])
-                number = int(group.split(' ')[1])
+                category = int(group.split()[0])
+                number = int(group.split()[1])
                 group_obj = UserGroup.objects.get(category=category, number=number)
                 if count == 0:
                     posts = posts_query.filter(group=group_obj)
@@ -261,6 +263,33 @@ class PostsView(LoginRequiredMixin, ListView):
             posts_query = posts
         return posts_query
     
+class GroupPostsView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = "socialapp/posts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = PostFilterForm()
+        filter = self.request.GET.get('filter')
+        if filter:       
+            form.initial["filter"] = filter
+        form.fields["group"].type = "hidden"
+        context["onlygroup"] = True
+        context["groupname"] = get_object_or_404(UserGroup, category=self.kwargs["category"], number=self.kwargs["number"]).name
+        context["groupcode"] = f"{self.kwargs['category']}+{self.kwargs['number']}"
+        context["form"] = form
+        return context
+
+    def get_queryset(self):
+        posts = Post.objects.filter(group=get_object_or_404(UserGroup, category=self.kwargs["category"], number=self.kwargs["number"]))
+
+        filter = self.request.GET.get('filter')
+        if filter:
+            posts_query = posts.filter(Q(text__icontains=filter) | Q(user__username__icontains=filter)).order_by("-time")
+        else:
+            posts_query = posts.order_by("-time")
+        return posts_query
+
 class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "socialapp/post_create.html"
@@ -271,6 +300,10 @@ class PostCreate(LoginRequiredMixin, CreateView):
         form = super().get_form(form_class)
         choices = getMyGroupsChoices(self.request.user) # 選択肢の番号は，"category_number"
         form.fields['group_select'].choices = choices
+
+        group = self.request.GET.get("group")
+        if group:
+            form.fields['group_select'].initial = group
         return form
     
     def form_valid(self, form):
@@ -293,6 +326,58 @@ def getMyGroupsChoices(user):
     for group in user.group.all().order_by('category'):
         choices.append((str(group.category) + " " + str(group.number), group.name))
     return choices
+
+class RegisterClasses(LoginRequiredMixin, FormView):
+    template_name = "socialapp/register_classes.html"
+    form_class = RegisterClassesForm
+    success_url = reverse_lazy("register_classes_done")
+
+    def form_valid(self, form): # 例外処理必要
+        j = json.loads(form.cleaned_data["jsoncode"])
+        max_number = UserGroup.objects.filter(category=5).aggregate(Max("number"))["number__max"]
+        if max_number:
+            number = max_number + 1
+        else:
+            number = 0
+
+        for site in j["site_collection"]:
+            name = site["title"]
+            if name[0] == "[":
+                name = name[name.find("]")+1:]
+            teacher = site["siteOwner"]["userDisplayName"]
+            if teacher:
+                if not teacher in ["Administrator Sakai", "ECS Admin"]:
+                    name += f'({site["siteOwner"]["userDisplayName"]})'
+            group = UserGroup.objects.filter(name=name).first()
+            if not group:
+                group = UserGroup.objects.create(
+                    category=5,
+                    number=number,
+                    name=name
+                )
+                number += 1
+            self.request.user.group.add(group)
+        return super().form_valid(form)
+
+class RegisterClassesDone(LoginRequiredMixin, FormView):
+    template_name = "socialapp/register_classes_done.html"
+    form_class = RegisterClassesDoneForm
+    success_url = reverse_lazy("register_classes_done")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        classes = self.request.user.group.all().filter(category=5)
+        choices = []
+        for cls in classes:
+            choices.append([cls.number, cls.name])
+        form.fields['classes'].choices = choices
+        return form
+    
+    def form_valid(self, form):
+        not_join_classes = form.cleaned_data.get("classes")
+        for cls in not_join_classes:
+            self.request.user.group.remove(UserGroup.objects.get(category=5, number=cls))
+        return super().form_valid(form)
 
 class Logout(LoginRequiredMixin, LogoutView):
     template_name = "socialapp/logout.html"

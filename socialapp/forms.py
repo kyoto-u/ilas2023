@@ -84,3 +84,15 @@ class CreateGroupForm(ModelForm):
     class Meta:
         model = UserGroup
         fields = ["name"]
+
+class RegisterClassesForm(Form):
+    jsoncode = forms.CharField(
+        label="",
+        widget=forms.Textarea()
+    )
+
+class RegisterClassesDoneForm(Form):
+    classes = forms.MultipleChoiceField(
+        label="",
+        widget=forms.CheckboxSelectMultiple
+    )

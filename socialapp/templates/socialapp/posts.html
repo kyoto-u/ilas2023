@@ -4,10 +4,15 @@
 <link rel="stylesheet" type="text/css" href="{% static 'socialapp/css/posts.css' %}" />
 {% endblock %}
 {% block title %}投稿{% endblock %}
-{% block header-title %}投稿{% endblock %}
+{% block header-title %}
+投稿
+{% if onlygroup %}
+    - {{ groupname }}
+{% endif %}
+{% endblock %}
 
 {% block content %}
-<a href="{% url 'post_create' %}" id="post_create_link">新しい投稿を作成</a>
+<a href="{% url 'post_create' %}{% if onlygroup %}?group={{ groupcode }}{% endif %}" id="post_create_link">新しい投稿を作成</a>
 <form action="" method="GET">
     {{ form.group }}
     {{ form.filter }}
@@ -34,6 +39,8 @@
                 <div class="post_time">{{ post.time }}</div>
             </div>
         </li>
+    {% empty %}
+        <p>投稿が存在しません。</p>
     {% endfor %}
 </ul>
 {% endblock %}

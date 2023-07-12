@@ -21,7 +21,7 @@
 </details>
 
 <details open>
-    <summary>回生</summary>
+    <summary>学年</summary>
     <ul class="groups_list">
         {% for group in grade_group %}
             <li>
@@ -34,7 +34,20 @@
 </details>
 
 <details open>
-    <summary>そのほかのグループ</summary>
+    <summary>授業</summary>
+    <ul class="groups_list">
+        {% for group in class_group %}
+            <li>
+                <a href="{% url 'users_view' %}?category={{ group.category }}&number={{ group.number }}">
+                    {{ group.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</details>
+
+<details open>
+    <summary>その他のグループ</summary>
     <ul class="groups_list">
         {% for group in other_group %}
             <li>

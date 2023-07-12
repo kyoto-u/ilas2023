@@ -23,21 +23,22 @@
 </form>
 
 {% for question, answers in question_list %}
-    <div class="question_field">
-        <div class="question_field_left">
-            <img src="{{ question.questioner.image.url }}" class="user_image">
-        </div>
-        <div class="question_field_right">
-            <a href="{% url 'user_view' question.questioner.id %}" class="user_link">{{ question.questioner.username }}</a>
-            {{ question.questioner.get_faculty_display }} , {{ question.questioner.get_grade_display }}
-            <div>
-                {{ question.question | linebreaksbr | escape | urlize }}
+    <div class="question_content">
+        <div class="question_field">
+            <div class="question_field_left">
+                <img src="{{ question.questioner.image.url }}" class="user_image">
             </div>
-            <div class="link_to_answer">
-                <a href="{% url 'question_answer' question.id %}">回答する</a>
+            <div class="question_field_right">
+                <a href="{% url 'user_view' question.questioner.id %}" class="user_link">{{ question.questioner.username }}</a>
+                {{ question.questioner.get_faculty_display }} , {{ question.questioner.get_grade_display }}
+                <div>
+                    {{ question.question | linebreaksbr | escape | urlize }}
+                </div>
+                <div class="link_to_answer">
+                    <a href="{% url 'question_answer' question.id %}">回答する</a>
+                </div>
             </div>
         </div>
-    </div>
     {% if answers %}
         <details>
             <summary>回答を表示</summary>
@@ -57,8 +58,10 @@
             </ul>
         </details>
     {% endif %}
+    </div>  
+{% empty %}
+    <p>質問が見つかりませんでした。</p>
 {% endfor %}
-<hr class="line">
 {% endblock %}
 
 {% block footer %}{% endblock %}

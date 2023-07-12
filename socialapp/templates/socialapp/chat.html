@@ -26,11 +26,13 @@
 {% endblock %}
 
 {% block footer %}
-<form action="" method="POST" id="form_field">
-    {{ form.talk }}
-    {{ form.talk.errors }}
-    {% csrf_token %}
-    <input type="submit" value="送信" id="sendtalkbutton">
-</form>
+<footer>
+    <form action="" method="POST" id="form_field">
+        {{ form.talk }}
+        {{ form.talk.errors }}
+        {% csrf_token %}
+        <input type="submit" value="送信" id="sendtalkbutton">
+    </form>
+</footer>
 {% endblock %}
     
